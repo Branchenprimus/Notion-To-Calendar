@@ -8,15 +8,6 @@ dotenv.config();
 const notion = new Client({ auth: process.env.NOTION_SECRET as string });
 const databaseId = process.env.NOTION_DB_ID as string;
 
-interface PageData {
-    id: string;
-    taskName: string;
-    status: string;
-    start: string;
-    end: string;
-    priority: string;
-}
-
 async function getNewPages(): Promise<NotionPage[]> {
     const storedIds = readStoredIds();
 
@@ -27,31 +18,25 @@ async function getNewPages(): Promise<NotionPage[]> {
     return response.results.filter(page => !storedIds.includes(page.id)) as NotionPage[];
 }
 
-function processPages(pages: NotionPage[]): PageData[] {
-    const pagesData = pages.map(page => {
-        let pageData: PageData = { id: page.id, taskName: '', status: '', start: '', end: '', priority: '' };
-
-        pageData.taskName = page.properties["Task name"]?.title?.map((titlePart: { plain_text: string }) => titlePart.plain_text).join('') || 'Unnamed Task';    
-        pageData.status = page.properties["Status"]?.status?.name || 'No Status';
-        pageData.start = page.properties["Due"]?.date?.start || 'No Start Date';
-        pageData.end = page.properties["Due"]?.date?.end || 'No End Date';
-        pageData.priority = page.properties["Priority"]?.select?.name || 'No Priority';
-
-        return pageData;
-    });
-
-    return pagesData;
-}
-
 async function findUpdatedPages(): Promise<void> {
     const newPages = await getNewPages();
-    const pagesData = processPages(newPages);
+
+    newPages.forEach(page => {
+        const eventData: CalendarEventData = {
+            id: page.id,
+            taskName: page.properties["Task name"]?.title?.map(t => t.plain_text).join('') || 'Unnamed Task',
+            status: page.properties["Status"]?.status?.name || 'No Status',
+            start: page.properties["Due"]?.date?.start || new Date(),
+            end: page.properties["Due"]?.date?.end || new Date(),
+            priority: page.properties["Priority"]?.select?.name || 'No Priority'
+        };
+
+        createCalendarEvent(eventData);
+    });
 
     // Update stored IDs
     const newIds = newPages.map(page => page.id);
     writeStoredIds(newIds);
-
-    console.log(pagesData);
 }
 
-findUpdatedPages()
+findUpdatedPages();

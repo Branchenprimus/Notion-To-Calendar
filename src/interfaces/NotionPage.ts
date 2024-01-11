@@ -9,8 +9,8 @@ interface NotionPage {
     };
     "Due"?: {
       date: {
-        start: string;
-        end?: string; // Optional end date
+        start: Date;
+        end?: Date; // Optional end date
       };
     };
     "Priority"?: {

@@ -1,24 +1,26 @@
 import ical from 'ical-generator';
 import fs from 'fs';
+import path from 'path';
 
-interface CalendarEventData {
-    start: Date;
-    end: Date;
-    summary: string;
-    description: string;
-}
 
-function createCalendarEvent(eventData: CalendarEventData): void {
-    const calendar = ical({name: 'notion calendar'});
+export function createCalendarEvent(eventData: CalendarEventData): void {
+    const calendar = ical({ name: 'Notion Calendar' });
+
+    // Use eventData to access the properties
+    const startDate = eventData.start;
+    const endDate = eventData.end || startDate; // Use the end date or default to start date
+    const tempDir = './temp';
+    if (!fs.existsSync(tempDir)){
+        fs.mkdirSync(tempDir);
+    }
 
     calendar.createEvent({
-        start: eventData.start,
-        end: eventData.end,
-        summary: eventData.summary,
-        description: eventData.description
+        start: startDate,
+        end: endDate,
+        summary: eventData.taskName,
+        description: `Status: ${eventData.status}\nPriority: ${eventData.priority}`
     });
 
-    fs.writeFileSync('./temp/event.ics', calendar.toString());
+    const filePath = path.join(tempDir, `${eventData.id}.ics`);
+    fs.writeFileSync(filePath, calendar.toString());
 }
-
-export { createCalendarEvent };
