@@ -17,35 +17,41 @@ interface PageData {
     priority: string;
 }
 
-const findUpdatedPages = async (): Promise<void> => {
+async function getNewPages(): Promise<NotionPage[]> {
     const storedIds = readStoredIds();
 
     const response = await notion.databases.query({
         database_id: databaseId,
     });
 
-    const newPages = response.results.filter(page => !storedIds.includes(page.id)) as NotionPage[];
+    return response.results.filter(page => !storedIds.includes(page.id)) as NotionPage[];
+}
 
-    const pagesData = newPages.map(page => {
+function processPages(pages: NotionPage[]): PageData[] {
+    const pagesData = pages.map(page => {
         let pageData: PageData = { id: page.id, taskName: '', status: '', start: '', end: '', priority: '' };
 
         pageData.taskName = page.properties["Task name"]?.title?.map((titlePart: { plain_text: string }) => titlePart.plain_text).join('') || 'Unnamed Task';    
         pageData.status = page.properties["Status"]?.status?.name || 'No Status';
-
-        // Accessing start and end dates correctly
         pageData.start = page.properties["Due"]?.date?.start || 'No Start Date';
         pageData.end = page.properties["Due"]?.date?.end || 'No End Date';
-
         pageData.priority = page.properties["Priority"]?.select?.name || 'No Priority';
 
         return pageData;
     });
 
-    const newIds = newPages.map(page => page.id);
-    writeStoredIds([...storedIds, ...newIds]);
-
-    console.log(pagesData);
-    console.log(newIds);
+    return pagesData;
 }
 
-findUpdatedPages();
+async function findUpdatedPages(): Promise<void> {
+    const newPages = await getNewPages();
+    const pagesData = processPages(newPages);
+
+    // Update stored IDs
+    const newIds = newPages.map(page => page.id);
+    writeStoredIds(newIds);
+
+    console.log(pagesData);
+}
+
+findUpdatedPages()
