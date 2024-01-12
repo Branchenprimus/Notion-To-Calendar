@@ -32,6 +32,7 @@ git clone https://github.com/Branchenprimus/Notion-To-Calendar.git
 3. Create a `.env` file in the root of the project and add your Notion API key:
    ```env
    NOTION_API_KEY=your_notion_api_key_here
+   NOTION_DB_ID=your_notion_db_id_here
    ```
 
 ## Notion Integration Setup
@@ -92,5 +93,4 @@ Contributions to Notion-To-Calendar are welcome! Please read our contributing gu
 ## License
 This project is licensed under the [Your License Name Here] - see the LICENSE file for details.
 ```
-
 You can further tailor this README to include more specific instructions, examples, and any additional information pertinent to your project.
