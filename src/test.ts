@@ -1,14 +1,14 @@
-import ical, {ICalCalendarMethod} from 'ical-generator';
+import ical, { ICalCalendarMethod } from 'ical-generator';
 import http from 'node:http';
 
-const calendar = ical({name: 'my first iCal'});
+const calendar = ical({ name: 'my first iCal' });
 
 // A method is required for outlook to display event as an invitation
 calendar.method(ICalCalendarMethod.REQUEST);
 
 const startTime = new Date();
 const endTime = new Date();
-endTime.setHours(startTime.getHours()+1);
+endTime.setHours(startTime.getHours() + 1);
 calendar.createEvent({
     start: startTime,
     end: endTime,

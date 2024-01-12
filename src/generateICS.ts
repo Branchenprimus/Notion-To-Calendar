@@ -10,7 +10,7 @@ export function createCalendarEvent(eventData: CalendarEventData): void {
     const startDate = eventData.start;
     const endDate = eventData.end || startDate; // Use the end date or default to start date
     const tempDir = './temp';
-    if (!fs.existsSync(tempDir)){
+    if (!fs.existsSync(tempDir)) {
         fs.mkdirSync(tempDir);
     }
 
