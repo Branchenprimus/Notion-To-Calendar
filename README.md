@@ -95,4 +95,3 @@ Contributions to Notion-To-Calendar are welcome!
 
 ## License
 This project is licensed under the [Your License Name Here] - see the LICENSE file for details.
-```
