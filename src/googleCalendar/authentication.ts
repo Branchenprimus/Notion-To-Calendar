@@ -5,12 +5,12 @@ import { authenticate } from '@google-cloud/local-auth';
 import { google, Auth } from 'googleapis';
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = path.join(process.cwd(), 'token.json');
-const CREDENTIALS_PATH = path.join(process.cwd(), './src/credentials.json');
+const TOKEN_PATH = path.join(process.cwd(), './src/googleCalendar/token.json');
+const CREDENTIALS_PATH = path.join(process.cwd(), './src/googleCalendar/credentials.json');
 
 
 /**
@@ -70,35 +70,5 @@ async function authorize(): Promise<Auth.OAuth2Client> {
     return client;
 }
 
-/**
- * Lists the next 10 events on the user's primary calendar.
- * @param {Auth.OAuth2Client} auth An authorized OAuth2 client.
- */
-async function listEvents(auth: Auth.OAuth2Client): Promise<void> {
-    const calendar = google.calendar({ version: 'v3', auth });
-    try {
-        const res = await calendar.events.list({
-            calendarId: 'primary',
-            timeMin: new Date().toISOString(),
-            maxResults: 10,
-            singleEvents: true,
-            orderBy: 'startTime',
-        });
-        const events = res.data.items;
-        if (!events || events.length === 0) {
-            console.log('No upcoming events found.');
-            return;
-        }
-        console.log('Upcoming 10 events:');
-        events.forEach((event) => {
-            const start = event.start?.dateTime || event.start?.date;
-            console.log(`${start} - ${event.summary}`);
-        });
-    } catch (err) {
-        console.error('Error retrieving events:', err);
-    }
-}
 
-authorize()
-    .then(listEvents)
-    .catch(console.error);
+export { authorize };

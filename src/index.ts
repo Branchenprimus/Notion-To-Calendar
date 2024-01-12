@@ -1,66 +1,16 @@
-import { Client } from '@notionhq/client';
-import dotenv from 'dotenv';
-import { readStoredIds, writeStoredIds } from './storage';
-import { createCalendarEvent } from './generateICS';
+import { authorize } from './googleCalendar/authentication'; // Adjust the path as necessary
+import { iterateNewPages } from './notion/notionApi';
+import { insertGoogleCalendarEvent, listEvents } from './googleCalendar/googleApi';
 
-dotenv.config();
-
-const notion = new Client({ auth: process.env.NOTION_SECRET as string });
-const databaseId = process.env.NOTION_DB_ID as string;
-
-async function getNewPages(): Promise<NotionPage[]> {
-  const storedIds = readStoredIds();
-  const response = await notion.databases.query({
-    database_id: databaseId,
-  });
-  return response.results.filter(page => !storedIds.includes(page.id)) as NotionPage[];
-}
-
-async function retrievePageContent(pageId: string): Promise<any[]> {
-  const response = await notion.blocks.children.list({
-    block_id: pageId,
-    page_size: 50, // adjust the page size as needed
-  });
-  return response.results;
-}
-
-async function iterateNewPages(): Promise<void> {
-  const newPages = await getNewPages();
-
-  for (const page of newPages) {
-    const contentBlocks = await retrievePageContent(page.id);
-
-    const startString = page.properties["Due"]?.date?.start;
-    const endString = page.properties["Due"]?.date?.end;
-
-    const startDate = startString ? new Date(startString) : new Date();
-    const endDate = endString ? new Date(endString) : new Date();
-
-
-    const eventData: CalendarEventData = {
-      id: page.id,
-      taskName: page.properties["Task name"]?.title?.map(t => t.plain_text).join('') || 'Unnamed Task',
-      status: page.properties["Status"]?.status?.name || 'No Status',
-      start: startDate,
-      end: endDate,
-      priority: page.properties["Priority"]?.select?.name || 'No Priority',
-      content: contentBlocks.map(block => {
-        if (block.type === 'paragraph' && block.paragraph.rich_text) {
-          return block.paragraph.rich_text.map((textItem: RichTextItem) => textItem.plain_text).join('');
-        } else {
-          return ''; // Return an empty string for non-paragraph or empty blocks
-        }
-      }).join('') // Join paragraph texts with a newline
-    };
-
-    console.log(eventData)
-
-    createCalendarEvent(eventData); //optional
+async function main() {
+  try {
+    const auth = await authorize();
+    await iterateNewPages(); // Iterate over new Notion pages and do something
+    await listEvents(auth); // List events from Google Calendar
+  } catch (error) {
+    console.error('Error:', error);
   }
-
-  // Update stored IDs with the new one
-  const newIds = newPages.map(page => page.id);
-  writeStoredIds([...readStoredIds(), ...newIds]);
 }
 
-iterateNewPages();
+main();
+
