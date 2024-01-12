@@ -87,47 +87,12 @@ For more detailed information, please refer to the official [Google Cloud Docume
 
 3. Once set up, the application will automatically synchronize your Notion pages with your calendar according to your configured preferences.
 
-## Data Model
-### NotionPage Interface
-```typescript
-interface NotionPage {
-  id: string;
-  properties: {
-    "Task name"?: {
-      title: { plain_text: string }[];
-    };
-    "Status"?: {
-      status: { name: string };
-    };
-    "Due"?: {
-      date: {
-        start: Date;
-        end?: Date; // Optional end date
-      };
-    };
-    "Priority"?: {
-      select: { name: string };
-    };
-    // Add other properties as needed
-  };
-  // Include other fields from Notion pages as needed
-}
-```
-This interface represents the structure of a page in Notion relevant for synchronization with calendar events. It includes:
-- `id`: Unique identifier of the page.
-- `properties`: Contains details about the task, such as the name, status, due date, and priority. Each property is optional and can be tailored according to the specific use case.
-
-## Customization
-- You can customize the synchronization settings by editing the configuration file located at `src/config.js`.
-- Available options include synchronization frequency, specific Notion page selection, and calendar format customization.
-
 ## Troubleshooting
-If you encounter any issues, refer to the Troubleshooting section in our documentation or open an issue on the GitHub repository.
+If you encounter any issues, open an issue on the GitHub repository.
 
 ## Contributing
-Contributions to Notion-To-Calendar are welcome! Please read our contributing guidelines for more information.
+Contributions to Notion-To-Calendar are welcome!
 
 ## License
 This project is licensed under the [Your License Name Here] - see the LICENSE file for details.
 ```
-You can further tailor this README to include more specific instructions, examples, and any additional information pertinent to your project.
