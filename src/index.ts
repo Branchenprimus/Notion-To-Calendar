@@ -30,15 +30,19 @@ async function findUpdatedPages(): Promise<void> {
   for (const page of newPages) {
     const contentBlocks = await retrievePageContent(page.id);
 
-    // Process the content to extract text from rich text blocks
-    //let contentText = 
+    const startString = page.properties["Due"]?.date?.start;
+    const endString = page.properties["Due"]?.date?.end;
 
-    const eventData = {
+    const startDate = startString ? new Date(startString) : new Date();
+    const endDate = endString ? new Date(endString) : new Date();
+
+
+    const eventData: CalendarEventData = {
       id: page.id,
       taskName: page.properties["Task name"]?.title?.map(t => t.plain_text).join('') || 'Unnamed Task',
       status: page.properties["Status"]?.status?.name || 'No Status',
-      start: page.properties["Due"]?.date?.start || new Date().toISOString(),
-      end: page.properties["Due"]?.date?.end || new Date().toISOString(),
+      start: startDate,
+      end: endDate,
       priority: page.properties["Priority"]?.select?.name || 'No Priority',
       content: contentBlocks.map(block => {
         if (block.type === 'paragraph' && block.paragraph.rich_text) {
@@ -50,6 +54,8 @@ async function findUpdatedPages(): Promise<void> {
     };
 
     console.log(eventData)
+
+    createCalendarEvent(eventData);
   }
 
   // Update stored IDs with the new one
