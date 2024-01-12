@@ -30,3 +30,5 @@ yarn-error.log*
 # Temporary files
 tmp/
 temp/
+token.json
+credentials.json
