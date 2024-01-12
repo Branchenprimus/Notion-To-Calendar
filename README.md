@@ -17,6 +17,7 @@ git clone https://github.com/Branchenprimus/Notion-To-Calendar.git
 ## Requirements
 - Node.js installed on your system.
 - A Notion account and API key.
+- Google Cloud setup (go to: Google Cloud Setup Instructions)
 
 ## Setup
 1. Navigate to the cloned directory:
