@@ -31,13 +31,7 @@ async function findUpdatedPages(): Promise<void> {
     const contentBlocks = await retrievePageContent(page.id);
 
     // Process the content to extract text from rich text blocks
-    let contentText = contentBlocks.map(block => {
-      if (block.type === 'paragraph' && block.paragraph.rich_text) {
-        return block.paragraph.rich_text.map((textItem: RichTextItem) => textItem.plain_text).join('');
-      } else {
-        return ''; // Return an empty string for non-paragraph or empty blocks
-      }
-    }).join('\n'); // Join paragraph texts with a newline
+    //let contentText = 
 
     const eventData = {
       id: page.id,
@@ -46,7 +40,13 @@ async function findUpdatedPages(): Promise<void> {
       start: page.properties["Due"]?.date?.start || new Date().toISOString(),
       end: page.properties["Due"]?.date?.end || new Date().toISOString(),
       priority: page.properties["Priority"]?.select?.name || 'No Priority',
-      content: contentText
+      content: contentBlocks.map(block => {
+        if (block.type === 'paragraph' && block.paragraph.rich_text) {
+          return block.paragraph.rich_text.map((textItem: RichTextItem) => textItem.plain_text).join('');
+        } else {
+          return ''; // Return an empty string for non-paragraph or empty blocks
+        }
+      }).join('') // Join paragraph texts with a newline
     };
 
     console.log(eventData)
