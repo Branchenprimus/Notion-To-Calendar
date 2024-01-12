@@ -24,7 +24,7 @@ async function retrievePageContent(pageId: string): Promise<any[]> {
   return response.results;
 }
 
-async function findUpdatedPages(): Promise<void> {
+async function iterateNewPages(): Promise<void> {
   const newPages = await getNewPages();
 
   for (const page of newPages) {
@@ -55,7 +55,7 @@ async function findUpdatedPages(): Promise<void> {
 
     console.log(eventData)
 
-    createCalendarEvent(eventData);
+    createCalendarEvent(eventData); //optional
   }
 
   // Update stored IDs with the new one
@@ -63,4 +63,4 @@ async function findUpdatedPages(): Promise<void> {
   writeStoredIds([...readStoredIds(), ...newIds]);
 }
 
-findUpdatedPages();
+iterateNewPages();
