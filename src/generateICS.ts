@@ -4,12 +4,13 @@ import path from 'path';
 
 
 export function createCalendarEvent(eventData: CalendarEventData): void {
+
     const calendar = ical({ name: 'Notion Calendar' });
 
     // Use eventData to access the properties
     const startDate = eventData.start;
     const endDate = eventData.end || startDate; // Use the end date or default to start date
-    const tempDir = './temp';
+    const tempDir = './src/temp/ISC';
     if (!fs.existsSync(tempDir)) {
         fs.mkdirSync(tempDir);
     }
@@ -18,7 +19,7 @@ export function createCalendarEvent(eventData: CalendarEventData): void {
         start: startDate,
         end: endDate,
         summary: eventData.taskName,
-        description: `Status: ${eventData.status}\nPriority: ${eventData.priority}`
+        description: `Status: ${eventData.status}\nPriority: ${eventData.priority}\nContent: ${eventData.content}`
     });
 
     const filePath = path.join(tempDir, `${eventData.id}.ics`);

@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "test": "rimraf ./temp ./src/temp && tsc && node dist/index.js"
+    "test": "rimraf ./src/temp && tsc && node dist/index.js"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",

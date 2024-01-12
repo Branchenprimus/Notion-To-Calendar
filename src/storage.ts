@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const storageFolderPath = './src/temp';
+const storageFolderPath = './src/temp/storage';
 const storageFilePath = path.join(storageFolderPath, 'storedIds.json');
 
 // Check if the temp folder exists, if not, create it
