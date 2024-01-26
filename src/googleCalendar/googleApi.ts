@@ -65,20 +65,5 @@ async function insertGoogleCalendarEvent(auth: Auth.OAuth2Client, eventData: Uni
     }
 }
 
-
-
-// Example usage
-// Note: You need to obtain 'auth' from Google's authentication flow
-const exampleEventData: CalendarEventData = {
-    id: 'example_id',
-    start: new Date('2024-01-13T09:00:00-07:00'),
-    end: new Date('2024-01-14T17:00:00-07:00'),
-    taskName: 'Google I/O 2015',
-    status: 'Confirmed',
-    priority: 'High',
-    content: 'A chance to hear more about Google\'s developer products.',
-};
-
-
 export { insertGoogleCalendarEvent, listEvents }
 

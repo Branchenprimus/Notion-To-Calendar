@@ -2,9 +2,8 @@ interface UnifiedEventData {
     id: string;
     taskName: string;
     status: string;
-    start: Date;
-    end?: Date; // Optional, since end date might not always be available
+    start?: Date;
+    end?: Date;
     priority: string;
-    content?: string; // Optional, as content might not always be available
+    content?: string;
   }
-  
