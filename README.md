@@ -1,6 +1,8 @@
 # Notion-To-Calendar
 
 ![image](https://github.com/Branchenprimus/Notion-To-Calendar/assets/44780855/32c5fa33-8b1d-47ea-abd0-65a430518655)
+<img src="https://github.com/Branchenprimus/Notion-To-Calendar/assets/44780855/32c5fa33-8b1d-47ea-abd0-65a430518655" width=50% height=50% />
+
 
 
 ## Description
