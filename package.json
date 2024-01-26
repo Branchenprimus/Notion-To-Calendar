@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "test": "rimraf ./src/temp && rimraf ./src/googleCalendar/token.json && tsc && node dist/index.js"
+    "test": "rimraf ./src/temp && rimraf ./src/googleCalendar/token.json && tsc && node dist/index.js",
+    "clean": "rimraf ./src/temp && rimraf ./src/googleCalendar/token.json",
+    "clean_temp": "rimraf ./src/temp",
+    "clean_gauth": "rimraf ./src/googleCalendar/token.json"
   },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
