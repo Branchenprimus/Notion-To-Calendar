@@ -1,7 +1,7 @@
 import { Client } from '@notionhq/client';
 import dotenv from 'dotenv';
 import { readStoredIds, writeStoredIds } from '../utils/storage';
-import { createCalendarEvent } from '../utils/generateICS';
+import { createCalendarEvent } from '../utils/generateICS(dep)';
 import { authorize } from '../googleCalendar/authentication';
 import { insertGoogleCalendarEvent } from '../googleCalendar/googleApi';
 
@@ -58,7 +58,9 @@ async function iterateNewPages(): Promise<void> {
                 }
             }).join('\n')
         };
-        createCalendarEvent(eventData);
+
+        console.log("eventData: " + eventData)
+
         await insertGoogleCalendarEvent(auth, eventData);
     }
 

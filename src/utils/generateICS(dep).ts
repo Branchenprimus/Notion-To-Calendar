@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 
-export function createCalendarEvent(eventData: CalendarEventData): void {
+export function createCalendarEvent(eventData: UnifiedEventData): void {
 
     const calendar = ical({ name: 'Notion Calendar' });
 

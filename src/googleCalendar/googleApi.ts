@@ -28,7 +28,7 @@ async function listEvents(auth: Auth.OAuth2Client): Promise<void> {
     }
 }
 
-async function insertGoogleCalendarEvent(auth: Auth.OAuth2Client, eventData: CalendarEventData): Promise<void> {
+async function insertGoogleCalendarEvent(auth: Auth.OAuth2Client, eventData: UnifiedEventData): Promise<void> {
     const calendar = google.calendar({ version: 'v3', auth });
 
     // Default time values if not provided

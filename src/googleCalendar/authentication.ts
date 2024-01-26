@@ -20,14 +20,30 @@ const CREDENTIALS_PATH = path.join(process.cwd(), './src/googleCalendar/credenti
  */
 async function loadSavedCredentialsIfExist(): Promise<Auth.OAuth2Client | null> {
     try {
-        const content = await fs.readFile(TOKEN_PATH, { encoding: 'utf-8' });
-        const credentials = JSON.parse(content);
-        return google.auth.fromJSON(credentials) as Auth.OAuth2Client;
+        // Check if the token file exists
+        if (await fileExists(TOKEN_PATH)) {
+            const content = await fs.readFile(TOKEN_PATH, { encoding: 'utf-8' });
+            const credentials = JSON.parse(content);
+            return google.auth.fromJSON(credentials) as Auth.OAuth2Client;
+        } else {
+            // File does not exist
+            return null;
+        }
     } catch (err) {
         console.error('Error loading saved credentials:', err);
         return null;
     }
 }
+
+async function fileExists(filePath: string): Promise<boolean> {
+    try {
+        await fs.access(filePath);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
 
 /**
  * Serializes credentials to a file compatible with GoogleAuth.fromJSON.

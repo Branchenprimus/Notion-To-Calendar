@@ -6,7 +6,7 @@ async function main() {
   try {
     const auth = await authorize();
     await iterateNewPages(); // Iterate over new Notion pages and do something
-    await listEvents(auth); // List events from Google Calendar
+    //await listEvents(auth); // List events from Google Calendar
   } catch (error) {
     console.error('Error:', error);
   }
