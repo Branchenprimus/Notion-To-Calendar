@@ -7,7 +7,6 @@ import { insertGoogleCalendarEvent } from '../googleCalendar/googleApi';
 
 dotenv.config();
 
-
 const notion = new Client({ auth: process.env.NOTION_SECRET as string });
 const databaseId = process.env.NOTION_DB_ID as string;
 
