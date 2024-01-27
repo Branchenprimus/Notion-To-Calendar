@@ -1,6 +1,6 @@
 # Notion-To-Calendar
 
-<img src="https://github.com/Branchenprimus/Notion-To-Calendar/assets/44780855/32c5fa33-8b1d-47ea-abd0-65a430518655" width="50%" height="50%" style="border-radius: 10px;" />
+<img src="[https://github.com/Branchenprimus/Notion-To-Calendar/assets/44780855/32c5fa33-8b1d-47ea-abd0-65a430518655](https://github.com/Branchenprimus/Notion-To-Calendar/assets/44780855/acf0ee0f-7386-436f-b2e8-bfc98acc2d58)" width="50%" height="50%" style="border-radius: 10px;" />
 
 ## Description
 Notion-To-Calendar is a tool designed to synchronize Notion pages with calendar events. It automates the process of transferring your scheduled tasks and events from Notion into a calendar format.
